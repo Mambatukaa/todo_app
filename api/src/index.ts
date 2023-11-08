@@ -46,12 +46,28 @@ app.get('/todos', async (_req, res) => {
   }
 });
 
-app.post('/createTodo', async (req, res) => {
+app.post('/todo', async (req, res) => {
   const todoToBeCreated = req.body;
-
-  const todo = await Todos.create(todoToBeCreated);
+  const todo = await Todos.createTodo(todoToBeCreated);
 
   res.status(201).json(todo);
+});
+
+app.put('/todo/:id', async (req, res) => {
+  const docFields = req.body;
+  const id = req.params;
+
+  const todo = await Todos.updateTodo(id, docFields);
+
+  res.status(200).json(todo);
+});
+
+app.delete('/todo/:id', async (req, res) => {
+  const { id } = req.params;
+
+  await Todos.deleteTodo(id);
+
+  res.status(200).send('Success');
 });
 
 const port = process.env.PORT || 8000;

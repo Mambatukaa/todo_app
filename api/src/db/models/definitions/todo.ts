@@ -11,5 +11,5 @@ export interface ITodoDocument extends ITodo {
 
 export const todoSchema = new Schema({
   title: { type: String, required: true },
-  complete: { type: Boolean, required: true }
+  complete: { type: Boolean, required: true, default: false }
 });
