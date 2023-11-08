@@ -24,11 +24,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
+app.get('/todo/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const todo = await Todos.getTodo(id);
+
+    return res.status(200).json(todo);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 
 app.get('/todos', async (_req, res) => {
-  const todos = await Todos.find({}).lean();
+  try {
+    const todos = await Todos.find({}).lean();
 
-  res.status(200).json(todos);
+    res.status(200).json(todos);
+  } catch (e) {
+    res.status(500).send(e);
+  }
 });
 
 app.post('/createTodo', async (req, res) => {

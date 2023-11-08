@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
 
 export interface ITodo {
-  isChecked: boolean;
   title: string;
+  complete: boolean;
 }
 
 export interface ITodoDocument extends ITodo {
@@ -10,5 +10,6 @@ export interface ITodoDocument extends ITodo {
 }
 
 export const todoSchema = new Schema({
-  title: { type: String, required: true }
+  title: { type: String, required: true },
+  complete: { type: Boolean, required: true }
 });
