@@ -3,6 +3,11 @@ import { Todos } from '../db/models';
 
 const router = Router();
 
+// handle erros
+const handleErrors = (res: Response, error: Error) => {
+  res.status(500).send(error.message);
+};
+
 router.get('/:id', async (req: Request, res: Response) => {
   const id = req.params.id;
 
@@ -11,7 +16,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 
     return res.status(200).json(todo);
   } catch (e) {
-    res.status(500).send(e);
+    handleErrors(res, e as Error);
   }
 });
 
@@ -21,7 +26,7 @@ router.get('/', async (_req: Request, res: Response) => {
 
     res.status(200).json(todos);
   } catch (e) {
-    res.status(500).send(e);
+    handleErrors(res, e as Error);
   }
 });
 
@@ -36,9 +41,13 @@ router.put('/:id', async (req: Request, res: Response) => {
   const docFields = req.body;
   const { id } = req.params;
 
-  const todo = await Todos.updateTodo(id, docFields);
+  try {
+    const todo = await Todos.updateTodo(id, docFields);
 
-  res.status(200).json(todo);
+    res.status(200).json(todo);
+  } catch (e) {
+    handleErrors(res, e as Error);
+  }
 });
 
 router.delete('/:id', async (req, res) => {
@@ -49,7 +58,7 @@ router.delete('/:id', async (req, res) => {
 
     res.status(200).send('Success');
   } catch (e: any) {
-    res.status(500).send(e.message);
+    handleErrors(res, e as Error);
   }
 });
 
