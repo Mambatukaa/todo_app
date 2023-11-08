@@ -24,7 +24,8 @@ const App: React.FC = () => {
           onChange={e => setTitle(e.target.value)}
         />
         <button
-          className="bg-blue-500 text-white p-2 rounded-r"
+          disabled={title.length ? false: true}
+          className="disabled:bg-gray-500 bg-blue-500 text-white p-2 rounded-r"
           onClick={() => {
             createTodo({ title, isCompleted: false }, setList);
 

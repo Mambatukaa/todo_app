@@ -1,7 +1,14 @@
+import { ITodoDocument } from '../types';
 import { deleteTodo, updateTodo } from '../utils/handleApi';
 import { useState } from 'react';
 
-const TaskList = ({ list, setList }: { list: any[]; setList: any }) => {
+const TaskList = ({
+  list,
+  setList
+}: {
+  list: ITodoDocument[];
+  setList: any;
+}) => {
   const [editId, setEditId] = useState<string | null>(null);
   const [editText, setEditText] = useState<string>('');
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ITodo } from '../types';
 
-const basUrl = 'http://localhost:8000';
+const basUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 // get all todo list from the server
 export const getAllTodo = (setList: any) => {
@@ -19,7 +19,7 @@ export const getAllTodo = (setList: any) => {
 export const createTodo = (docFields: ITodo, setList: any) => {
   axios
     .post(`${basUrl}/todo`, docFields)
-    .then(data => {
+    .then(() => {
       getAllTodo(setList);
     })
     .catch(e => {

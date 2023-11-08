@@ -1,4 +1,8 @@
 export interface ITodo {
   title: string;
-  isCompleted: boolean
+  isCompleted: boolean;
+}
+
+export interface ITodoDocument extends ITodo {
+  _id: string;
 }
