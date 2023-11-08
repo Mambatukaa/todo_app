@@ -2,7 +2,7 @@ import { Schema } from 'mongoose';
 
 export interface ITodo {
   title: string;
-  complete: boolean;
+  isCompleted: boolean;
 }
 
 export interface ITodoDocument extends ITodo {
@@ -11,5 +11,5 @@ export interface ITodoDocument extends ITodo {
 
 export const todoSchema = new Schema({
   title: { type: String, required: true },
-  complete: { type: Boolean, required: true, default: false }
+  isCompleted: { type: Boolean, required: true, default: false }
 });

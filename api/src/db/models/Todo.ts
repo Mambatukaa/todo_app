@@ -11,7 +11,7 @@ export interface ITodoModel extends Model<ITodoDocument> {
 const loadClass = () => {
   class Todo {
     public static async createTodo(docFields: ITodo) {
-      const todo = await Todos.create({ ...docFields, isChecked: false });
+      const todo = await Todos.create({ ...docFields, isCompleted: false });
 
       return Todos.findOne({ _id: todo._id });
     }
