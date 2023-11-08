@@ -11,7 +11,11 @@ export interface ITodoModel extends Model<ITodoDocument> {
 const loadClass = () => {
   class Todo {
     public static async createTodo(docFields: ITodo) {
-      const todo = await Todos.create({ ...docFields, isCompleted: false });
+      const todo = await Todos.create({
+        ...docFields,
+        createdAt: new Date(),
+        isCompleted: false
+      });
 
       return Todos.findOne({ _id: todo._id });
     }
@@ -27,7 +31,10 @@ const loadClass = () => {
     }
 
     public static async updateTodo(_id: string, docFields: ITodo) {
-      await Todos.updateOne({ _id }, { $set: docFields });
+      await Todos.updateOne(
+        { _id },
+        { $set: { ...docFields, modifiedAt: new Date() } }
+      );
 
       return Todos.getTodo(_id);
     }
