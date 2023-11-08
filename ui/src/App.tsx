@@ -1,48 +1,46 @@
-import './App.css';
-import { useState, useEffect } from 'react';
-import TaskList from './TaskList';
-import { createTodo } from './utils/handleApi';
-import { getAllTodo } from './utils/handleApi';
+import React, { useState, useEffect } from 'react';
+import { createTodo, getAllTodo } from './utils/handleApi';
+import TaskList from './components/TaskList';
 
-function App() {
-  //state to manage input field
-  const [title, setTitle] = useState('');
-  const [list, setList] = useState([]);
+const App: React.FC = () => {
+  const [list, setList] = useState<
+    { _id: string; title: string; isCompleted: boolean }[]
+  >([]);
+  const [title, setTitle] = useState<string>('');
 
   useEffect(() => {
     getAllTodo(setList);
   }, []);
 
   return (
-    <div className="h-screen flex justify-center items-center flex-col gap-8">
-      <div className="flex justify-center items-center gap-6">
+    <div className="max-w-md mx-auto mt-10 p-4">
+      <h1 className="text-3xl font-bold mb-4 text-center">To-Do List</h1>
+      <div className="flex mb-4">
         <input
-          className="w-72 border-2  rounded-md px-3 py-3 bg-[#E8ECF4] backdrop-blur-lg"
+          type="text"
+          className="w-full p-2 border rounded-l"
+          placeholder="Add a new task"
           value={title}
-          onChange={e => {
-            setTitle(e.target.value);
-          }}
-          placeholder="Enter a new task"
+          onChange={e => setTitle(e.target.value)}
         />
         <button
-          className="h-full px-5 py-2 bg-[#0264F6] text-white font-medium rounded-md"
-          onClick={() =>
-            //execute function to add new todo to the list
-            createTodo(
-              {
-                title,
-                complete: false
-              },
-              setList
-            )
-          }
+          className="bg-blue-500 text-white p-2 rounded-r"
+          onClick={() => {
+            createTodo({ title, isCompleted: false }, setList);
+
+            // clear input
+            setTitle('');
+          }}
         >
-          Add Todo Item
+          Add
         </button>
       </div>
 
-      <TaskList list={list} setList={setList} />
+      <ul className="space-y-2">
+        <TaskList list={list} setList={setList} />
+      </ul>
     </div>
   );
-}
+};
+
 export default App;

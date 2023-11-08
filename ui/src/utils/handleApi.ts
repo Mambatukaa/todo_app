@@ -3,9 +3,10 @@ import { ITodo } from '../types';
 
 const basUrl = 'http://localhost:8000';
 
+// get all todo list from the server
 export const getAllTodo = (setList: any) => {
   axios
-    .get(`${basUrl}/todos`)
+    .get(`${basUrl}/todo`)
     .then(({ data }) => {
       setList(data);
     })
@@ -14,6 +15,7 @@ export const getAllTodo = (setList: any) => {
     });
 };
 
+// create new todo
 export const createTodo = (docFields: ITodo, setList: any) => {
   axios
     .post(`${basUrl}/todo`, docFields)
@@ -25,17 +27,19 @@ export const createTodo = (docFields: ITodo, setList: any) => {
     });
 };
 
+// update todo
 export const updateTodo = (id: string, docFields: ITodo, setList: any) => {
   axios
     .put(`${basUrl}/todo/${id}`, docFields)
-    .then(({ data }) => {
-      setList(data);
+    .then(() => {
+      getAllTodo(setList);
     })
     .catch(e => {
       console.log(e);
     });
 };
 
+// delete todo
 export const deleteTodo = (id: string, setList: any) => {
   axios
     .delete(`${basUrl}/todo/${id}`)
