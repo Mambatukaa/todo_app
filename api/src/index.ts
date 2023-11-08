@@ -1,7 +1,7 @@
-import * as express from 'express';
-import * as cors from 'cors';
-import * as dotenv from 'dotenv';
-import * as bodyParser from 'body-parser';
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
 import { connect } from './db/connection';
 import Todos from './db/models/Todo';
 
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
-app.get('/todo/:id', async (req, res) => {
+app.get('/todo/:id', async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
@@ -36,7 +36,7 @@ app.get('/todo/:id', async (req, res) => {
   }
 });
 
-app.get('/todos', async (_req, res) => {
+app.get('/todos', async (_req: Request, res: Response) => {
   try {
     const todos = await Todos.find({}).lean();
 
@@ -46,16 +46,16 @@ app.get('/todos', async (_req, res) => {
   }
 });
 
-app.post('/todo', async (req, res) => {
+app.post('/todo', async (req: Request, res: Response) => {
   const todoToBeCreated = req.body;
   const todo = await Todos.createTodo(todoToBeCreated);
 
   res.status(201).json(todo);
 });
 
-app.put('/todo/:id', async (req, res) => {
+app.put('/todo/:id', async (req: Request, res: Response) => {
   const docFields = req.body;
-  const id = req.params;
+  const { id } = req.params;
 
   const todo = await Todos.updateTodo(id, docFields);
 
@@ -65,9 +65,13 @@ app.put('/todo/:id', async (req, res) => {
 app.delete('/todo/:id', async (req, res) => {
   const { id } = req.params;
 
-  await Todos.deleteTodo(id);
+  try {
+    await Todos.deleteTodo(id);
 
-  res.status(200).send('Success');
+    res.status(200).send('Success');
+  } catch (e: any) {
+    res.status(500).send(e.message);
+  }
 });
 
 const port = process.env.PORT || 8000;
